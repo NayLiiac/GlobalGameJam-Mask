@@ -18,23 +18,24 @@ public class PlayerStatsDisplayer : MonoBehaviour
 
         PStats.UpdateClickRatio += UpdateClickingRatio;
 
-        UpdateClickCountUI(0);
-        UpdateTotalClickCountUI(0);
+        UpdateClickCountUI(PStats.GetClickCount());
+        UpdateTotalClickCountUI(PStats.GetTotalClickCount());
+        UpdateClickingRatio(PStats.GetClickPerSeconds());
     }
 
     private void UpdateClickCountUI(int amount)
     {
-        ClickCountUI.text = "Click Count : " + amount.ToString();
+        ClickCountUI.text = "Nombre de Masques : " + amount.ToString();
     }
 
     private void UpdateTotalClickCountUI(int amount)
     {
-        TotalClickCount.text = "Total Click Count : " + amount.ToString();
+        TotalClickCount.text = "Masques totaux : " + amount.ToString();
     }
 
     private void UpdateClickingRatio(int amount)
     {
-        ClickPerSeconds.text = "Click per Seconds : " + amount.ToString();
+        ClickPerSeconds.text = "Masques par Secondes : " + amount.ToString();
     }
 
 

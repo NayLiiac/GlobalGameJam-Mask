@@ -1,7 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 public class ShopButton : ShopController
 {
+    private void Start()
+    {
+        base.InitializeButton();
+    }
 }

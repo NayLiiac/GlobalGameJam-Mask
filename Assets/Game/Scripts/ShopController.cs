@@ -11,7 +11,7 @@ public abstract class ShopController : MonoBehaviour
     public Button ShopButton;
     public TextMeshProUGUI PriceText;
     public TextMeshProUGUI ShopNameText;
-    public Image ShopIcon;
+    private Image _shopIcon;
     public TextMeshProUGUI BoughtTimesText;
 
     [Header("Price Color")]
@@ -28,7 +28,7 @@ public abstract class ShopController : MonoBehaviour
     [SerializeField]
     private int _currentPrice = 0;
     [SerializeField]
-    private Sprite _shopIcon;
+    public Image ShopIcon;
     [SerializeField]
     private int _priceCoef = 2;
     [SerializeField]
@@ -44,10 +44,11 @@ public abstract class ShopController : MonoBehaviour
         BoughtTimesText.text = _boughtTimes.ToString();
 
         PStats.UpdateClickCount += UpdatePriceColor; 
+        UpdatePriceColor(PStats.GetClickCount());
 
         if(_shopIcon != null)
         {
-            ShopIcon.sprite = _shopIcon;
+            _shopIcon.sprite = ShopIcon.sprite;
         }
     }
 
@@ -56,6 +57,8 @@ public abstract class ShopController : MonoBehaviour
         if (PStats.GetClickCount() < _currentPrice)
         {
             Debug.Log("Pas assez de clicks");
+            Debug.Log(_currentPrice);
+            Debug.Log(PStats.GetClickCount());
         }
         else
         {
@@ -63,15 +66,17 @@ public abstract class ShopController : MonoBehaviour
             UpdatePriceButton(_currentPrice);
             ApplyClickerValue(_clickerValue);
             
+            
         }
     }
 
     public virtual void UpdatePriceButton(int amount)
     {
         PStats.RemoveClickCount(amount);
+        UpdatePriceColor(PStats.GetClickCount());
         _currentPrice = _basePrice + amount * _priceCoef;
         _boughtTimes++;
-
+        UpdateShop();
     }
 
     public virtual void ApplyClickerValue(int amount)
@@ -90,6 +95,12 @@ public abstract class ShopController : MonoBehaviour
         {
             PriceText.color = Color.green;
         }
+    }
+
+    public virtual void UpdateShop()
+    {
+        BoughtTimesText.text = _boughtTimes.ToString();
+        PriceText.text = _currentPrice.ToString();
     }
     #endregion
 }

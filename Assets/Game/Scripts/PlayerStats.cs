@@ -66,6 +66,8 @@ public class PlayerStats : MonoBehaviour
     private IEnumerator GeneratePassiveIncome(int i)
     {
         _clickCount += i;
+        UpdateClickCount?.Invoke(_clickCount);
+        UpdateTotalClickCount?.Invoke(_totalClickCount);
         yield return new WaitForSeconds(1);
         StartCoroutine(GeneratePassiveIncome(_clickPerSeconds));
     }
