@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.Rendering;
 
@@ -7,6 +8,8 @@ public class ShopButton : ShopController
     private bool _isMaskElement;
     [SerializeField]
     private CanvasGroup _canvasGroup;
+
+    public event Action MaskPartBoughtEvent;
 
     private void Start()
     {
@@ -40,6 +43,7 @@ public class ShopButton : ShopController
                     case true: SetButton(true); break;
                     case false: SetButton(false); break;
                 }
+                MaskPartBoughtEvent?.Invoke();
             }
         }
     }

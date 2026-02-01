@@ -10,7 +10,7 @@ public abstract class ShopController : MonoBehaviour
     public Button ShopButton;
     public TextMeshProUGUI PriceText;
     public TextMeshProUGUI ShopNameText;
-    private Image _shopIcon;
+    public Image ShopIcon;
     public TextMeshProUGUI BoughtTimesText;
 
     [Header("Price Color")]
@@ -29,8 +29,6 @@ public abstract class ShopController : MonoBehaviour
     [SerializeField]
     private int _basePrice = 5;
     public int CurrentPrice = 0;
-    [SerializeField]
-    public Image ShopIcon;
     [SerializeField]
     private int _priceCoef = 2;
     [SerializeField]
@@ -51,11 +49,6 @@ public abstract class ShopController : MonoBehaviour
         PStats.UpdateClickCount += UpdatePriceColor;
         PStats.RatioRequiredMetEvent += RatioRequiredMet;
         UpdatePriceColor(PStats.GetClickCount());
-
-        if(_shopIcon != null)
-        {
-            _shopIcon.sprite = ShopIcon.sprite;
-        }
     }
 
     public virtual void BuyItem()
@@ -96,11 +89,11 @@ public abstract class ShopController : MonoBehaviour
     {
         if(i < CurrentPrice)
         {
-            PriceText.color = Color.red;
+            PriceText.color = _notEnoughClicksColor;
         }
         else
         {
-            PriceText.color = Color.green;
+            PriceText.color = _enoughClicksColor;
         }
     }
 
