@@ -27,13 +27,6 @@ public class PlayerStatsDisplayer : MonoBehaviour
         ClickCountUI.text = "Nombre de Masques : " + amount.ToString();
     }
 
-    /*
-    private void UpdateTotalClickCountUI(int amount)
-    {
-        TotalClickCount.text = "Masques totaux : " + amount.ToString();
-    }
-    */
-
     private void UpdateClickingRatio(int amount)
     {
         ClickPerSeconds.text = "Masques par Secondes : " + amount.ToString();

@@ -55,14 +55,10 @@ public abstract class ShopController : MonoBehaviour
     {
         if (PStats.GetClickCount() < CurrentPrice)
         {
-            /*
-            Debug.Log("Pas assez de clicks");
-            Debug.Log(CurrentPrice);
-            Debug.Log(PStats.GetClickCount()); */
+
         }
         else
         {
-            //Debug.Log("Bought");
             UpdatePriceButton(CurrentPrice);
             ApplyClickerValue(ClickerValue);
         }
