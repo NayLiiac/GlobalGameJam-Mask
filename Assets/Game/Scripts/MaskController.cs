@@ -63,7 +63,6 @@ public class MaskController : MonoBehaviour
     {
         NextMaskElementLocation = Random.Range(0, MaskParts.Count);
         NextMaskElement = MaskParts[NextMaskElementLocation].ElementList[Random.Range(0, MaskParts[NextMaskElementLocation].ElementList.Count)];
-        Debug.Log(NextMaskElement + "+" +  NextMaskElementLocation);
     }
 
     private void PlaceMaskPart()
