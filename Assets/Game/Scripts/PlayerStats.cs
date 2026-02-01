@@ -13,6 +13,9 @@ public class PlayerStats : MonoBehaviour
     private int _totalClickCount = 0;
     [SerializeField]
     private int _clickPerSeconds = 0;
+
+    [SerializeField]
+    private int _ratioRequired = 500;
     #endregion
 
     #region Refs
@@ -29,6 +32,8 @@ public class PlayerStats : MonoBehaviour
     public event Action<int> UpdateClickRatio;
     public event Action<int> UpdateTotalClickCount;
     #endregion
+
+    public event Action<int> RatioRequiredMetEvent;
     #endregion
 
 
@@ -36,15 +41,12 @@ public class PlayerStats : MonoBehaviour
     {
         PController.OnMaskClicked += GetClick;
         StartCoroutine(GeneratePassiveIncome(_clickPerSeconds));
-
     }
 
     private void GetClick()
     {
-        Debug.Log("<color=green>Click</color>");
         _clickCount += 1;
         _totalClickCount += 1;
-
 
         UpdateClickCount?.Invoke(_clickCount);
         UpdateTotalClickCount?.Invoke(_totalClickCount);
@@ -60,15 +62,41 @@ public class PlayerStats : MonoBehaviour
     {
         _clickPerSeconds += amount;
         UpdateClickRatio?.Invoke(_clickPerSeconds);
+
+        if(CheckMilestone())
+        {
+            RatioRequiredMetEvent?.Invoke(_clickPerSeconds);
+        }
     }
+
+    #region Milestones
+    public void SetMilestone()
+    {
+        _ratioRequired += 500;
+    }
+
+    public bool CheckMilestone()
+    {
+        if(_clickPerSeconds > _ratioRequired)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+    #endregion
 
     #region Passive Income
     private IEnumerator GeneratePassiveIncome(int i)
     {
         _clickCount += i;
+        _totalClickCount += i;
         UpdateClickCount?.Invoke(_clickCount);
         UpdateTotalClickCount?.Invoke(_totalClickCount);
         yield return new WaitForSeconds(1);
+
         StartCoroutine(GeneratePassiveIncome(_clickPerSeconds));
     }
     #endregion

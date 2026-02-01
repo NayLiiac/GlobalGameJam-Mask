@@ -1,4 +1,3 @@
-using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -6,7 +5,7 @@ using UnityEngine.UI;
 public abstract class ShopController : MonoBehaviour
 {
     [SerializeField]
-    private PlayerStats PStats;
+    public PlayerStats PStats;
     [Header("UI Components")]
     public Button ShopButton;
     public TextMeshProUGUI PriceText;
@@ -18,15 +17,18 @@ public abstract class ShopController : MonoBehaviour
     [SerializeField]
     private Color _notEnoughClicksColor;
     [SerializeField]
-    private Color _EnoughClicksColor;
+    private Color _enoughClicksColor;
+
+    [Header("Locked Button Color")]
+    public Color LockedButtonColor;
+    public Color UnlockedButtonColor;
 
     [Header("Shop Info")]
     [SerializeField]
     private string _shopName = string.Empty;
     [SerializeField]
     private int _basePrice = 5;
-    [SerializeField]
-    private int _currentPrice = 0;
+    public int CurrentPrice = 0;
     [SerializeField]
     public Image ShopIcon;
     [SerializeField]
@@ -34,16 +36,20 @@ public abstract class ShopController : MonoBehaviour
     [SerializeField]
     private int _boughtTimes = 0;
     [SerializeField]
-    public int _clickerValue = 0;
+    public int ClickerValue = 0;
 
     public virtual void InitializeButton()
     {
-        _currentPrice = _basePrice;
+        CurrentPrice = _basePrice;
         ShopNameText.text = _shopName;
         PriceText.text = _basePrice.ToString();
-        BoughtTimesText.text = _boughtTimes.ToString();
+        if(BoughtTimesText != null )
+        {
+            BoughtTimesText.text = _boughtTimes.ToString();
+        }
 
-        PStats.UpdateClickCount += UpdatePriceColor; 
+        PStats.UpdateClickCount += UpdatePriceColor;
+        PStats.RatioRequiredMetEvent += RatioRequiredMet;
         UpdatePriceColor(PStats.GetClickCount());
 
         if(_shopIcon != null)
@@ -54,19 +60,18 @@ public abstract class ShopController : MonoBehaviour
 
     public virtual void BuyItem()
     {
-        if (PStats.GetClickCount() < _currentPrice)
+        if (PStats.GetClickCount() < CurrentPrice)
         {
+            /*
             Debug.Log("Pas assez de clicks");
-            Debug.Log(_currentPrice);
-            Debug.Log(PStats.GetClickCount());
+            Debug.Log(CurrentPrice);
+            Debug.Log(PStats.GetClickCount()); */
         }
         else
         {
-            Debug.Log("Bought");
-            UpdatePriceButton(_currentPrice);
-            ApplyClickerValue(_clickerValue);
-            
-            
+            //Debug.Log("Bought");
+            UpdatePriceButton(CurrentPrice);
+            ApplyClickerValue(ClickerValue);
         }
     }
 
@@ -74,7 +79,7 @@ public abstract class ShopController : MonoBehaviour
     {
         PStats.RemoveClickCount(amount);
         UpdatePriceColor(PStats.GetClickCount());
-        _currentPrice = _basePrice + amount * _priceCoef;
+        CurrentPrice = _basePrice + amount + _priceCoef;
         _boughtTimes++;
         UpdateShop();
     }
@@ -84,10 +89,12 @@ public abstract class ShopController : MonoBehaviour
         PStats.IncreaseClickingRate(amount);
     }
 
+    public abstract void RatioRequiredMet(int amount);
+
     #region Customization
     public virtual void UpdatePriceColor(int i)
     {
-        if(i < _currentPrice)
+        if(i < CurrentPrice)
         {
             PriceText.color = Color.red;
         }
@@ -99,8 +106,18 @@ public abstract class ShopController : MonoBehaviour
 
     public virtual void UpdateShop()
     {
-        BoughtTimesText.text = _boughtTimes.ToString();
-        PriceText.text = _currentPrice.ToString();
+        if(BoughtTimesText != null)
+        {
+            BoughtTimesText.text = _boughtTimes.ToString();
+        }
+        PriceText.text = CurrentPrice.ToString();
+    }
+
+    public virtual void ChangeDisabledButtonColor(Color color, Button button)
+    {
+        ColorBlock cb = button.colors;
+        cb.disabledColor = color;
+        button.colors = cb;
     }
     #endregion
 }

@@ -1,11 +1,10 @@
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerStatsDisplayer : MonoBehaviour
 {
     public TextMeshProUGUI ClickCountUI;
-    public TextMeshProUGUI TotalClickCount;
+    //public TextMeshProUGUI TotalClickCount;
     public TextMeshProUGUI ClickPerSeconds;
 
     [SerializeField]
@@ -14,12 +13,12 @@ public class PlayerStatsDisplayer : MonoBehaviour
     private void Start()
     {
         PStats.UpdateClickCount += UpdateClickCountUI; 
-        PStats.UpdateTotalClickCount += UpdateTotalClickCountUI;
+        //PStats.UpdateTotalClickCount += UpdateTotalClickCountUI;
 
         PStats.UpdateClickRatio += UpdateClickingRatio;
 
         UpdateClickCountUI(PStats.GetClickCount());
-        UpdateTotalClickCountUI(PStats.GetTotalClickCount());
+        //UpdateTotalClickCountUI(PStats.GetTotalClickCount());
         UpdateClickingRatio(PStats.GetClickPerSeconds());
     }
 
@@ -28,10 +27,12 @@ public class PlayerStatsDisplayer : MonoBehaviour
         ClickCountUI.text = "Nombre de Masques : " + amount.ToString();
     }
 
+    /*
     private void UpdateTotalClickCountUI(int amount)
     {
         TotalClickCount.text = "Masques totaux : " + amount.ToString();
     }
+    */
 
     private void UpdateClickingRatio(int amount)
     {
