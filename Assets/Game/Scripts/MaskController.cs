@@ -64,11 +64,6 @@ public class MaskController : MonoBehaviour
         NextMaskElementLocation = Random.Range(0, MaskParts.Count);
         NextMaskElement = MaskParts[NextMaskElementLocation].ElementList[Random.Range(0, MaskParts[NextMaskElementLocation].ElementList.Count)];
         Debug.Log(NextMaskElement + "+" +  NextMaskElementLocation);
-        SetMaskPartShop();
-    }
-    public void SetMaskPartShop()
-    {
-        _shopButton.ShopIcon.sprite = NextMaskElement;
     }
 
     private void PlaceMaskPart()
@@ -100,5 +95,6 @@ public class MaskController : MonoBehaviour
                 _maskCanva5.alpha = 1f;
             break;
         }
+        SelectNextPart();
     }
 }
